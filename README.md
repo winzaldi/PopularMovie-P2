@@ -1,1 +1,1 @@
-Popular Movies app (Project 1) for Udacity's Android Developer Fasttrack. 
+Popular Movies app (Project 2) for Udacity's Android Developer Fasttrack. 
