@@ -25,10 +25,10 @@ import com.learn.android.udacity.udacity_popularmovie.adapter.MoviesAdapter;
 import com.learn.android.udacity.udacity_popularmovie.data.MovieConstant;
 import com.learn.android.udacity.udacity_popularmovie.data.MovieDbContract;
 import com.learn.android.udacity.udacity_popularmovie.model.Movie;
-import com.learn.android.udacity.udacity_popularmovie.model.MovieResult;
+import com.learn.android.udacity.udacity_popularmovie.model.response.MovieResult;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServiceFactory;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServices;
-import com.learn.android.udacity.udacity_popularmovie.utils.EndlessScrollListener;
+import com.learn.android.udacity.udacity_popularmovie.utils.EndlessRecyclerViewScrollListener;
 
 import org.parceler.Parcels;
 
@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
     private SwipeRefreshLayout refreshLayout;
-    private EndlessScrollListener endlessScrollListener;
+    private EndlessRecyclerViewScrollListener endlessScrollListener;
+
+    private int totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +128,18 @@ public class MainActivity extends AppCompatActivity implements
         refreshLayout.setOnRefreshListener(this);
 
 
-        endlessScrollListener = new EndlessScrollListener(layoutManager) {
+        endlessScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int currentPage) {
+            public void onLoadMore(int currentPage,int count, RecyclerView view){
                 Log.d(TAG, "onLoadMore: " + currentPage);
+                Log.d(TAG, "totalItemsCount: " + count);
+                count = totalItemCount;
                 getMovies(selectedSort, currentPage);
             }
         };
         mRecyclerView.addOnScrollListener(endlessScrollListener);
+
+
         if (recyclerPosition > 0)
             mRecyclerView.setScrollY(recyclerPosition);
 
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                 movieList.clear();
+                totalItemCount = response.body().getTotal_results();
                 movieList.addAll(response.body().getResults());
                 mAdapter.setMovieList(movieList);
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -217,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onRefresh() {
         refreshLayout.setRefreshing(false);
         page = 1;
-        getMovies(selectedSort,1);
+        getMovies(selectedSort, page);
 
     }
 

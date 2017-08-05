@@ -5,9 +5,16 @@ package com.learn.android.udacity.udacity_popularmovie.data;
  */
 
 public class MovieConstant {
+
     public static final String RECYCLER_POSITION = "recycleview_position";
     public static final String MOVIE_VIDEOS_STATE = "state_movie";
     public static final String PAGE_STATE = "state_page";
+
+    //Key in detail view
+    public static final String KEY_MOVIE_VIDEOS = "KEY_MOVIES_TRAILERS";
+    public static final String KEY_MOVIE_REVIEWS = "KEY_REVIEW";
+    public static final String KEY_MOVIE = "KEY_MOVIE";
+
 
     public final static class COLUMNMOVIE {
         public static final int _ID = 0;

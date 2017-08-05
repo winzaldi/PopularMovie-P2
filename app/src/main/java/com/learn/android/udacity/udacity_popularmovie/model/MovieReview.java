@@ -33,15 +33,15 @@ public class MovieReview implements Parcelable {
         this.url = in.readString();
     }
 
-    public static final Creator<MovieVideo> CREATOR = new Creator<MovieVideo>() {
+    public static final Creator<MovieTrailers> CREATOR = new Creator<MovieTrailers>() {
         @Override
-        public MovieVideo createFromParcel(Parcel in) {
-            return new MovieVideo(in);
+        public MovieTrailers createFromParcel(Parcel in) {
+            return new MovieTrailers(in);
         }
 
         @Override
-        public MovieVideo[] newArray(int size) {
-            return new MovieVideo[size];
+        public MovieTrailers[] newArray(int size) {
+            return new MovieTrailers[size];
         }
     };
 

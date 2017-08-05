@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.learn.android.udacity.udacity_popularmovie.R;
-import com.learn.android.udacity.udacity_popularmovie.model.MovieReview;
-import com.learn.android.udacity.udacity_popularmovie.model.MovieVideo;
+import com.learn.android.udacity.udacity_popularmovie.model.MovieTrailers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
 
-    private List<MovieVideo> mMovieVideoList;
+    private List<MovieTrailers> mMovieVideoList;
     private LayoutInflater mInflater;
     private Context mContext;
 
@@ -38,7 +37,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
 
     @Override
     public void onBindViewHolder(TrailersViewHolder holder, int position) {
-        MovieVideo video = mMovieVideoList.get(position);
+        MovieTrailers video = mMovieVideoList.get(position);
         holder.setTvName(video.getName());
     }
 
