@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/img_trailers"
@@ -12,7 +12,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="Image Description"
         android:scaleType="centerCrop"
-        android:padding="5dp"
+        android:padding="4dp"
         android:textColor="#000"/>
 
     <TextView

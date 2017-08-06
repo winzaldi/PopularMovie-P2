@@ -28,7 +28,7 @@ import com.learn.android.udacity.udacity_popularmovie.model.Movie;
 import com.learn.android.udacity.udacity_popularmovie.model.response.MovieResult;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServiceFactory;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServices;
-import com.learn.android.udacity.udacity_popularmovie.utils.EndlessRecyclerViewScrollListener;
+import com.learn.android.udacity.udacity_popularmovie.utils.EndlessScrollListener;
 
 import org.parceler.Parcels;
 
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements
     private int page = 1;
     private int recyclerPosition;
     private List<Movie> movieList = new ArrayList<>();
-    private List<Movie> mFavoriteMovieList = new ArrayList<>();
 
     //loader ID
     private static final int ID_LOADER_FOR_MOVIE = 45;
@@ -64,20 +63,21 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private MoviesAdapter mAdapter;
     private SwipeRefreshLayout refreshLayout;
-    private EndlessRecyclerViewScrollListener endlessScrollListener;
-
-    private int totalItemCount;
+    private EndlessScrollListener endlessScrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_main_movie);
         progressBar = (ProgressBar) findViewById(R.id.loading);
         tvMessage = (TextView) findViewById(R.id.tv_pesan);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_content);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_content);
+
         initRecycleViewer();
 
         if (savedInstanceState == null) {
@@ -90,9 +90,13 @@ public class MainActivity extends AppCompatActivity implements
                 page = savedInstanceState.getInt(MovieConstant.PAGE_STATE);
                 recyclerPosition = savedInstanceState.getInt(MovieConstant.RECYCLER_POSITION, 0);
 
-                final List<Movie> movies = Parcels.unwrap(savedInstanceState.getParcelable(MovieConstant.MOVIE_VIDEOS_STATE));
-                this.movieList.clear();
-                this.movieList.addAll(movies);
+                movieList = Parcels.unwrap(savedInstanceState.getParcelable(MovieConstant.MOVIE_VIDEOS_STATE));
+
+                Log.d(TAG,"PAGE ::" + page);
+                Log.d(TAG,"RECYCLE ::" +recyclerPosition);
+                Log.d(TAG,"SIZE ::" + movieList.size());
+
+                mAdapter.setMovieList(movieList);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -111,10 +115,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initRecycleViewer() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_main_movie);
         /**  change count of grid column depend on screen orientation **/
         Resources res = getResources();
-        LinearLayoutManager layoutManager;
         int columnCount = res.getInteger(R.integer.column_portrait);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -122,29 +124,25 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             columnCount = res.getInteger(R.integer.column_land);
         }
-
-        layoutManager = new GridLayoutManager(this, columnCount);
+        final LinearLayoutManager layoutManager = new GridLayoutManager(this, columnCount);
         mRecyclerView.setLayoutManager(layoutManager);
         refreshLayout.setOnRefreshListener(this);
+        mAdapter = new MoviesAdapter(this);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
 
-
-        endlessScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        endlessScrollListener = new EndlessScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int currentPage,int count, RecyclerView view){
-                Log.d(TAG, "onLoadMore: " + currentPage);
-                Log.d(TAG, "totalItemsCount: " + count);
-                count = totalItemCount;
+            public void onLoadMore(int currentPage){
+                Log.i(TAG, "onLoadMore: " + currentPage);
                 getMovies(selectedSort, currentPage);
             }
         };
         mRecyclerView.addOnScrollListener(endlessScrollListener);
 
-
         if (recyclerPosition > 0)
             mRecyclerView.setScrollY(recyclerPosition);
 
-        mAdapter = new MoviesAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
 
@@ -168,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements
         call.enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                movieList.clear();
-                totalItemCount = response.body().getTotal_results();
                 movieList.addAll(response.body().getResults());
                 mAdapter.setMovieList(movieList);
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -212,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements
                 getMovies(selectedSort, page);
                 break;
             case R.id.mn_favorites:
+                Log.d(TAG,"FAVORITE CLICK");
                 selectedSort = FAVORITE;
                 getSupportLoaderManager().initLoader(ID_LOADER_FOR_MOVIE, null, this);
                 break;
@@ -243,11 +240,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.getCount() > 0) {
-            convertCursorToMovie(data);
-            movieList.clear();
-            movieList.addAll(mFavoriteMovieList);
-            mAdapter.notifyDataSetChanged();
-
+            List<Movie> listOfMovies = convertCursorToMovie(data);
+            mAdapter.setMovieList(listOfMovies);
         } else {
             hideContent();
             tvMessage.setVisibility(View.VISIBLE);
@@ -268,8 +262,8 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.notifyDataSetChanged();
     }
 
-    private void convertCursorToMovie(Cursor data) {
-        mFavoriteMovieList.clear();
+    private List<Movie> convertCursorToMovie(Cursor data) {
+        List<Movie> listOfMovies = new ArrayList<>();
         for (int i = 0; i < data.getCount(); i++) {
             data.moveToPosition(i);
             Movie model = new Movie();
@@ -282,8 +276,9 @@ public class MainActivity extends AppCompatActivity implements
             model.setFavMovie(data.getString(MovieConstant.COLUMNMOVIE.FAVORED));
             model.setPoster(data.getString(MovieConstant.COLUMNMOVIE.POSTER_PATH));
             model.setBackdrop(data.getString(MovieConstant.COLUMNMOVIE.BACKDROP_PATH));
-            mFavoriteMovieList.add(model);
+            listOfMovies.add(model);
         }
+        return listOfMovies;
     }
 
 

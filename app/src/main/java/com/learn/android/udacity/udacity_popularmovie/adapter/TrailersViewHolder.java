@@ -12,8 +12,8 @@ import com.learn.android.udacity.udacity_popularmovie.R;
  */
 
 public class TrailersViewHolder extends RecyclerView.ViewHolder {
-    private ImageView img_trailers;
-    private TextView tv_name;
+    public ImageView img_trailers;
+    public TextView tv_name;
 
     public TrailersViewHolder(View itemView) {
 

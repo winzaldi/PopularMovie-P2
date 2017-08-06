@@ -30,4 +30,14 @@ public class ImageUtils {
                 .into(view);
 
     }
+
+    public static void loadImgVideo(Context context, ImageView view, String url) {
+        Picasso.with(view.getContext())
+                .load(url)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(view);
+    }
+
+
 }

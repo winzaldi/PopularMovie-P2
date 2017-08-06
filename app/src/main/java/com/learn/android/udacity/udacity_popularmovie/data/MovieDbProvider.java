@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by winzaldi on 8/4/17.
@@ -46,7 +47,7 @@ public class MovieDbProvider extends ContentProvider  {
 
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
-
+        Log.d("URIURI :::",uri+"" );
         Cursor query;
         switch (match){
 
@@ -60,7 +61,7 @@ public class MovieDbProvider extends ContentProvider  {
                         sortOrder);
                 break;
             default:
-                throw new UnsupportedOperationException("Unknown Insert URI :" + uri);
+                throw new UnsupportedOperationException("Unknown Query URI :" + uri);
         }
         query.setNotificationUri(getContext().getContentResolver(),uri);
         return query;
@@ -81,7 +82,7 @@ public class MovieDbProvider extends ContentProvider  {
         switch (match){
             case MOVIES :
                 long id = db.insertOrThrow(MovieDbContract.Movie.TABLE_NAME,null,contentValues);
-                uriInsert = MovieDbContract.Movie.buildMovieUri(String.valueOf(id));
+                uriInsert = MovieDbContract.Movie.buildMovieUri(Integer.parseInt(String.valueOf(id)));
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown insert uri "+uri);

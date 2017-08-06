@@ -29,8 +29,8 @@ public class MovieDbContract {
 
 
 
-        static Uri buildMovieUri(String movieId){
-            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        public static Uri buildMovieUri(int movieId){
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
 

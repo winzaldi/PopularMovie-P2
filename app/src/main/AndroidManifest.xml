@@ -25,7 +25,6 @@
 
         <activity android:name=".MovieDetailActivity"
             android:label=""
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider

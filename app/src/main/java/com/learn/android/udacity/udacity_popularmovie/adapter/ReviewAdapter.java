@@ -11,6 +11,7 @@ import com.learn.android.udacity.udacity_popularmovie.MovieDetailActivity;
 import com.learn.android.udacity.udacity_popularmovie.R;
 import com.learn.android.udacity.udacity_popularmovie.model.Movie;
 import com.learn.android.udacity.udacity_popularmovie.model.MovieReview;
+import com.learn.android.udacity.udacity_popularmovie.model.MovieTrailers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
         final MovieReview review= mMovieReviewList.get(position);
         holder.setTvAuthor(review.getAuthor());
         holder.setTvContent(review.getContent());
+    }
+
+    public void setMovieReviewList(List<MovieReview> trailersList)
+    {
+        this.mMovieReviewList.clear();
+        this.mMovieReviewList.addAll(trailersList);
+        // The adapter needs to know that the data has changed. If we don't call this, app will crash.
+        notifyDataSetChanged();
     }
 
     @Override

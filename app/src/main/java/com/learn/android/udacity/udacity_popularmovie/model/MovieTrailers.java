@@ -122,6 +122,11 @@ public class MovieTrailers implements Parcelable {
         return 0;
     }
 
+    public String getUrlForVideoTrailer() {
+        return "https://i1.ytimg.com/vi/" + key + "/0.jpg";
+    }
+
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.site);

@@ -11,7 +11,7 @@ import com.learn.android.udacity.udacity_popularmovie.R;
  */
 
 public class ReviewViewHolder  extends RecyclerView.ViewHolder  {
-    private TextView tv_author,tv_content;
+    public TextView tv_author,tv_content;
 
     public ReviewViewHolder(View itemView) {
         super(itemView);

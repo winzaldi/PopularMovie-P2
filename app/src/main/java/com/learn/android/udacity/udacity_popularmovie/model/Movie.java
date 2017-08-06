@@ -14,6 +14,7 @@ import com.learn.android.udacity.udacity_popularmovie.data.MovieDbContract;
 
 public class Movie implements Parcelable{
 
+    @SerializedName("id")
     private int id;
     private String title;
     @SerializedName("poster_path")
@@ -28,7 +29,7 @@ public class Movie implements Parcelable{
     private String voteCount;
     @SerializedName("vote_average")
     private String voteAverage;
-    private String favMovie ;
+    private String favMovie = "T";
 
     public Movie() {
     }
@@ -123,12 +124,15 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(title);
-        parcel.writeString(poster);
-        parcel.writeString(description);
-        parcel.writeString(backdrop);
-        parcel.writeString(releaseDate);
-        parcel.writeString(voteAverage);
+        parcel.writeInt(this.id);
+        parcel.writeString(this.title);
+        parcel.writeString(this.poster);
+        parcel.writeString(this.description);
+        parcel.writeString(this.backdrop);
+        parcel.writeString(this.releaseDate);
+        parcel.writeString(this.voteCount);
+        parcel.writeString(this.voteAverage);
+        parcel.writeString(this.favMovie);
 
     }
 
@@ -149,6 +153,18 @@ public class Movie implements Parcelable{
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", poster='" + poster + '\'' +
+                ", description='" + description + '\'' +
+                ", backdrop='" + backdrop + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", voteCount='" + voteCount + '\'' +
+                ", voteAverage='" + voteAverage + '\'' +
+                ", favMovie='" + favMovie + '\'' +
+                '}';
+    }
 }

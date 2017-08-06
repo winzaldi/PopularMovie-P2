@@ -44,7 +44,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
             public void onClick(View view) {
                 int position = viewHolder.getAdapterPosition();
                 Intent intent = new Intent(mContext, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, mMovieList.get(position));
+                Movie movie = mMovieList.get(position);
+                Log.d("SEND :",movie.getTitle());
+                Log.d("SEND :",""+movie.getId());
+                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
                 mContext.startActivity(intent);
             }
         });

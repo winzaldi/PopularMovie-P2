@@ -3,7 +3,9 @@ package com.learn.android.udacity.udacity_popularmovie;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -26,11 +28,11 @@ import com.learn.android.udacity.udacity_popularmovie.data.MovieDbContract;
 import com.learn.android.udacity.udacity_popularmovie.model.Movie;
 import com.learn.android.udacity.udacity_popularmovie.model.MovieReview;
 import com.learn.android.udacity.udacity_popularmovie.model.MovieTrailers;
-import com.learn.android.udacity.udacity_popularmovie.model.response.MovieResult;
 import com.learn.android.udacity.udacity_popularmovie.model.response.MovieReviewResult;
+import com.learn.android.udacity.udacity_popularmovie.model.response.MovieTrailerResult;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServiceFactory;
 import com.learn.android.udacity.udacity_popularmovie.service.MovieDbServices;
-import com.learn.android.udacity.udacity_popularmovie.utils.EndlessRecyclerViewScrollListener;
+import com.learn.android.udacity.udacity_popularmovie.utils.EndlessScrollListener;
 import com.learn.android.udacity.udacity_popularmovie.utils.ImageUtils;
 
 import org.parceler.Parcels;
@@ -61,11 +63,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private ReviewAdapter mReviewAdapter;
     private TrailersAdapter mTrailersAdapter;
     private static int totalReviewPages;
-    private EndlessRecyclerViewScrollListener mScrollListener;
+    private EndlessScrollListener mScrollListener;
 
     private List<MovieReview> reviewList = new ArrayList<>();
     private List<MovieTrailers> trailerList = new ArrayList<>();
-    private boolean isFavorite = false;
+    private boolean isFavorited = false;
 
     private Movie mMovie;
 
@@ -75,9 +77,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-
-        if (getIntent().hasExtra(EXTRA_MOVIE)) {
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_MOVIE)) {
             mMovie = getIntent().getParcelableExtra(EXTRA_MOVIE);
+            //Log.d(TAG, "TITLE :: " + mMovie.toString());
+
         } else {
             throw new IllegalArgumentException("Detail activity must receive a movie parcelable");
         }
@@ -86,7 +90,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate : In Save Instance State");
             trailerList = savedInstanceState.getParcelableArrayList(MovieConstant.KEY_MOVIE_VIDEOS);
             reviewList = savedInstanceState.getParcelableArrayList(MovieConstant.KEY_MOVIE_REVIEWS);
-            mMovie = savedInstanceState.getParcelable(MovieConstant.KEY_MOVIE);
+            mMovie = Parcels.unwrap(savedInstanceState.getParcelable(MovieConstant.KEY_MOVIE)) ;
         }
 
         imgBackDrop = (ImageView) findViewById(R.id.img_backdrop);
@@ -102,17 +106,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFavorite) {
+                if (isFavorited) {
+                    isFavorited = false;
+                    mMovie.setFavMovie("T");
                     deleteMovieFromDatabase(mMovie.getId());
+                    fabFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     Toast.makeText(MovieDetailActivity.this, "Remove From Favorite", Toast.LENGTH_SHORT).show();
                 } else {
+                    isFavorited = true;
+                    mMovie.setFavMovie("Y");
                     insertMovieToDatabase(mMovie);
+                    fabFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
                     Toast.makeText(MovieDetailActivity.this, "Add To Favorite", Toast.LENGTH_SHORT).show();
 
                 }
             }
         });
         rvReview = (RecyclerView) findViewById(R.id.rvReview);
+
         rvTrailers = (RecyclerView) findViewById(R.id.rvTrailers);
 
         setSupportActionBar(toolbar);
@@ -154,7 +165,11 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             ImageUtils.loadPosterImg(this, imgPoster, mMovie.getPoster());
             ImageUtils.loadBackdropImg(this, imgBackDrop, mMovie.getBackdrop());
+            //Check is Favorite Moive or Not
+            showFavoritedIcon(isFavoritedMovie());
 
+            initRvReviews();
+            initRvTrailers();
 
         }
 
@@ -175,23 +190,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void initRecycleViewserTrailers() {
-        rvTrailers.setLayoutManager(new LinearLayoutManager(this));
-        mTrailersAdapter = new TrailersAdapter(this);
-        rvTrailers.setAdapter(mTrailersAdapter);
-    }
 
-    private void initRecycleViewserReviews() {
-        rvReview.setLayoutManager(new GridLayoutManager(this, 3));
-        mReviewAdapter = new ReviewAdapter(this);
-        rvReview.setAdapter(mReviewAdapter);
-
-    }
-
-    private void openVideoOnYoutube(String key) {
-        final String URL = "http://www.youtube.com/watch?v=" + key;
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URL)));
-    }
 
     private void deleteMovieFromDatabase(int id) {
         ContentResolver resolver = getContentResolver();
@@ -214,32 +213,90 @@ public class MovieDetailActivity extends AppCompatActivity {
         contentValues.put(MovieDbContract.Movie.COLUMN_MOVIE_POSTER_PATH, mMovie.getPoster());
         contentValues.put(MovieDbContract.Movie.COLUMN_MOVIE_BACKDROP_PATH, mMovie.getBackdrop());
 
-        resolver.insert(MovieDbContract.Movie.CONTENT_URI,contentValues);
+        resolver.insert(MovieDbContract.Movie.CONTENT_URI, contentValues);
     }
 
-    private void getMovieReviews(int id, int page) {
+    private boolean isFavoritedMovie() {
+        final String where = String.format("%s=?", MovieDbContract.Movie.COLUMN_MOVIE_ID);
+        final String[] args = new String[]{String.valueOf(mMovie.getId())};
+        final Cursor cursor = getContentResolver().query(MovieDbContract.Movie.CONTENT_URI, MovieConstant.MovieProjection, where, args, null);
+        Log.d(TAG, "getMovie: " + mMovie.getTitle());
+        Log.d(TAG, "getMovie: cursor count " + cursor.getCount());
+        if (cursor.getCount() >= 1) {
+          return  true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //back main activity without refresh
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    public void showFavoritedIcon(boolean favorited) {
+        Log.d(TAG, "Show Favorited Icon ");
+        if(favorited){
+            isFavorited = true;
+            fabFavorite.setImageResource(R.drawable.ic_favorite_black_24dp);
+        }else{
+            isFavorited = false;
+            fabFavorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        }
+
+    }
+
+    public void initRvTrailers(){
+        Resources res = getResources();
+        int columnCount = res.getInteger(R.integer.column_portrait);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            columnCount = res.getInteger(R.integer.column_portrait);
+        } else {
+            columnCount = res.getInteger(R.integer.column_land);
+        }
+        rvTrailers.setLayoutManager(new GridLayoutManager(this,columnCount));
+        final TrailersAdapter trailersAdapter = new TrailersAdapter(this);
+        rvTrailers.setAdapter(trailersAdapter);
         MovieDbServices services = new MovieDbServiceFactory().create();
-        Call<MovieReviewResult> call = services.getMovieReview(id,page);
+        Call<MovieTrailerResult> call = services.getMovieTrailers(mMovie.getId());
+        call.enqueue(new Callback<MovieTrailerResult>() {
+            @Override
+            public void onResponse(Call<MovieTrailerResult> call, Response<MovieTrailerResult> response) {
+                trailerList.addAll(response.body().getResults());
+                trailersAdapter.setTrailerList(trailerList);
+            }
+
+            @Override
+            public void onFailure(Call<MovieTrailerResult> call, Throwable t) {
+                Log.d(TAG,t.getLocalizedMessage());
+                Toast.makeText(MovieDetailActivity.this, "Failed Get Video from server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void initRvReviews(){
+        rvReview.setLayoutManager(new LinearLayoutManager(this));
+        final ReviewAdapter reviewAdapter = new ReviewAdapter(this);
+        rvReview.setAdapter(reviewAdapter);
+        MovieDbServices services = new MovieDbServiceFactory().create();
+        Call<MovieReviewResult> call = services.getMovieReview(mMovie.getId(),1);
         call.enqueue(new Callback<MovieReviewResult>() {
             @Override
             public void onResponse(Call<MovieReviewResult> call, Response<MovieReviewResult> response) {
-                if(response.body()!=null){
-                    totalReviewPages = response.body().getTotal_pages();
-                    List<MovieReview> results = response.body().getResults();
-                    if(!results.isEmpty()){
-                        reviewList.addAll(results);
-                        mReviewAdapter.notifyDataSetChanged();
-
-                    }
-                }
+                reviewList.addAll(response.body().getResults());
+                reviewAdapter.setMovieReviewList(reviewList);
             }
 
             @Override
             public void onFailure(Call<MovieReviewResult> call, Throwable t) {
-
+                Log.d(TAG,t.getLocalizedMessage());
+                Toast.makeText(MovieDetailActivity.this, "Failed Get Reviews from server", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 }
