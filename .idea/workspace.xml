@@ -16,35 +16,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa6be1bd-06e8-4384-a03c-034054622a01" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/utils/EndlessScrollListener.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/utils/EndlessRecyclerViewScrollListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/layout-land/activity_movie_detail.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/MovieDetailActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/MovieDetailActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/MoviesAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/MoviesAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/ReviewAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/ReviewAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/ReviewViewHolder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/ReviewViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/TrailersAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/TrailersAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/TrailersViewHolder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/adapter/TrailersViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbContract.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbContract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbProvider.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/data/MovieDbProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/model/Movie.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/model/Movie.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/model/MovieTrailers.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/model/MovieTrailers.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/utils/ImageUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/learn/android/udacity/udacity_popularmovie/utils/ImageUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_trailers.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_trailers.xml" />
     </list>
     <ignored path="Udacity-PopularMovie.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1673,7 +1649,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4499393677000" />
+        <entry key="$PROJECT_DIR$" value="4499459259000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
