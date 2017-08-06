@@ -20,7 +20,7 @@ android {
     }
     buildTypes.each {
         // Attention : please change the key
-        it.buildConfigField "String", "THEMOVIEDB_KEY", "\"\"" // "add your API KEY from moviedb site"
+        it.buildConfigField "String", "THEMOVIEDB_KEY", "\"65bcef1cdaa4d0dc4fbfd009e65b073b\"" // "add your API KEY from moviedb site"
         it.buildConfigField "String", "THEMOVIEDB_API", "\"https://api.themoviedb.org/3/\""
         it.buildConfigField "String", "POSTER_URL", "\"http://image.tmdb.org/t/p/w342\""
         it.buildConfigField "String", "BACKDROP_URL", "\"http://image.tmdb.org/t/p/w780\""

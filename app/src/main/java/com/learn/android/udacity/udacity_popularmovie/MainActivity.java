@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.mn_favorites:
                 Log.d(TAG,"FAVORITE CLICK");
                 selectedSort = FAVORITE;
-                getSupportLoaderManager().initLoader(ID_LOADER_FOR_MOVIE, null, this);
+                getSupportLoaderManager().restartLoader(ID_LOADER_FOR_MOVIE, null, this);
                 break;
         }
 
