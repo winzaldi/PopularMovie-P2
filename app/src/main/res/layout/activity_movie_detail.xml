@@ -142,11 +142,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_overview"
-                android:layout_margin="24dp"
-                android:fontFamily="sans-serif-light"
+                android:layout_margin="8dp"
+                android:text="Trailer"
                 android:textStyle="bold"
                 android:textColor="#000"
-                tools:text="Trailers" />
+                android:textSize="16dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvTrailers"
@@ -164,11 +164,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rvTrailers"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif"
+                android:layout_margin="8dp"
+                android:text="Review"
                 android:textStyle="bold"
                 android:textColor="#000"
-                tools:text="Review" />
+                android:textSize="16dp" />
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvReview"
